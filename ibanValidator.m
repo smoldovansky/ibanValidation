@@ -25,17 +25,19 @@ static NSString* const LettersAndDecimals = @"ABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456
     }
     iban = [[iban substringWithRange:NSMakeRange(0, iban.length - 2)] stringByAppendingString:@"00"];
 
-    while(true)
+    int decnumber=0;
+    
+    while(decnumber >= 97 || iban.length >= 3)
     {
         int iMin = (int)MIN(iban.length, 9);
         NSString* strPart = [iban substringWithRange:NSMakeRange(0, iMin)];
-        int decnumber = strPart.intValue;
-        if(decnumber < 97 || iban.length < 3)
-            break;
+        decnumber = strPart.intValue;
         int del = decnumber % 97;
         iban =  [NSString stringWithFormat:@"%d%@", del, [iban substringFromIndex:iMin]];
     }
+
     int check = 98 - iban.intValue;
     
     return checkDigit == check;
+
 }
